@@ -19,7 +19,6 @@ export class Users {
   @Column({ name: 'password', nullable: false })
   password: string;
 
-  @OneToMany(() => Shortener, shortener => shortener.user)
- shorteners: Shortener[];
+  @OneToMany(() => Shortener, (shortener) => shortener.user)
+  shorteners: Shortener[];
 }
-

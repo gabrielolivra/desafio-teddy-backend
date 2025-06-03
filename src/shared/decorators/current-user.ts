@@ -11,8 +11,13 @@ export interface ICurrentUser {
 export const CurrentUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    const authHeader = request.headers['authorization'] || request.headers['Authorization'];
-    if (authHeader && typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
+    const authHeader =
+      request.headers['authorization'] || request.headers['Authorization'];
+    if (
+      authHeader &&
+      typeof authHeader === 'string' &&
+      authHeader.startsWith('Bearer ')
+    ) {
       const token = authHeader.slice(7);
       try {
         const secret = process.env.PRIVATE_KEY;
