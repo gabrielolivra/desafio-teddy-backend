@@ -12,7 +12,7 @@ export class ShortenerService {
   constructor(
     @InjectRepository(Shortener)
     private readonly shortenerRepository: Repository<Shortener>,
-  ) {}
+  ) { }
 
   async shortenUrl(urlOriginal: CreateShortenerDto, user: ICurrentUser) {
     const shortCode = nanoid(6);
@@ -25,7 +25,9 @@ export class ShortenerService {
     const shortener = this.shortenerRepository.create({
       shortCode,
       original: urlOriginal.originalUrl,
-      user,
+      user: {
+        id: user.sub,
+      },
     });
 
     await this.shortenerRepository.save(shortener);

@@ -5,24 +5,32 @@ import {
   Column,
   CreateDateColumn,
   ManyToOne,
+  DeleteDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
 export class Shortener {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
 
-  @Column({ unique: true })
+  @Column({ name:'short_code', unique: true })
   shortCode: string;
 
-  @Column()
+  @Column({name:'original'})
   original: string;
 
-  @Column({ default: 0 })
+  @Column({name:'clicks', default: 0 })
   clicks: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({name:'created_at'})
   createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt: Date;
 
   @ManyToOne(() => Users, (user) => user.shorteners)
   user: Users;
