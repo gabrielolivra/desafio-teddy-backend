@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-     "migration:generate": "npx typeorm migration:generate src/shared/migrations/$npm_config_name -d src/data-source.ts",
+    "migration:generate": "npx typeorm migration:generate src/shared/migrations/$npm_config_name -d src/data-source.ts",
     "migration:run": "npx typeorm migration:run -d src/data-source.ts",
     "migration:show": "npx typeorm migration:show -d src/data-source.ts",
     "migration:revert": "npx typeorm migration:revert -d src/data-source.ts"
@@ -34,6 +34,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "dotenv": "^16.5.0",
+    "nanoid": "^5.1.5",
     "pg": "^8.15.6",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
