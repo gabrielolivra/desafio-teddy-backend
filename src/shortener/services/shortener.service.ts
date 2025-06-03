@@ -1,33 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { nanoid } from 'nanoid';
 import { Repository } from 'typeorm';
 import { Shortener } from '../entity/shortener.entity';
+import { ICurrentUser } from 'src/shared/decorators/current-user';
+import { temporaryUrlMap } from 'src/shared/cache/url-cache';
 
 @Injectable()
 export class ShortenerService {
     constructor(
         @InjectRepository(Shortener)
         private readonly shortenerRepository: Repository<Shortener>,
-    ) {}
+    ) { }
 
-    async shortenUrl(original:string){
-        const shortCode = nanoid(6)
+    async shortenUrl(original: string, user: ICurrentUser) {
+        const shortCode = nanoid(6);
+        console.log('user', user)
+
+        if (!user) {
+            temporaryUrlMap.set(shortCode, original);
+            return { shortUrl: `http://localhost:3001/api/${shortCode}` };
+        }
+
         const shortener = this.shortenerRepository.create({
             shortCode,
-            original
-        })
-        await this.shortenerRepository.save(shortener)
-        return {shortUrl: `http://localhost:3001/api/${shortCode}`}
+            original,
+            user
+        });
+
+        await this.shortenerRepository.save(shortener);
+
+        return { shortUrl: `http://localhost:3001/api/${shortCode}` };
     }
 
-    async getOriginalUrl(shortCode:string){
+
+    async getOriginalUrl(shortCode: string) {
         const short = await this.shortenerRepository.findOne({
-            where:{
+            where: {
                 shortCode
             }
         })
-        if(!short){
+        if (!short) {
             return null
         }
         short.clicks++
