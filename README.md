@@ -31,6 +31,23 @@
 $ pnpm install
 ```
 
+## Up docker-compose
+
+```bash
+$ docker-compose up -d
+```
+
+
+## Run migrations
+```bash
+# development
+$ pnpm build
+
+# watch mode
+$ pnpm migrations:run
+
+```
+
 ## Compile and run the project
 
 ```bash
