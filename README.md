@@ -44,7 +44,7 @@ $ docker-compose up -d
 $ pnpm build
 
 # watch mode
-$ pnpm migrations:run
+$ pnpm migration:run
 
 ```
 
