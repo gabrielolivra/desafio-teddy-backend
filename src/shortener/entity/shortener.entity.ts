@@ -11,13 +11,13 @@ import {
 
 @Entity()
 export class Shortener {
-  @PrimaryGeneratedColumn({ name: 'id' })
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column({ name:'short_code', unique: true })
+  @Column({ name:'short_code', unique: true, nullable:true })
   shortCode: string;
 
-  @Column({name:'original'})
+  @Column({name:'original', nullable:true})
   original: string;
 
   @Column({name:'clicks', default: 0 })

@@ -4,18 +4,26 @@ import { CurrentUser, ICurrentUser } from 'src/shared/decorators/current-user';
 import { temporaryUrlMap } from 'src/shared/cache/url-cache';
 import { CreateShortenerDto, UpdateShortenerDto } from './dtos/shortener.dtos';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { ApiOperation, ApiResponse, ApiTags, ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 
+@ApiTags('Shortener')
 @Controller()
 export class ShortenerController {
     constructor(private readonly shortenerService: ShortenerService) { }
 
     @Get('/my-urls')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Retorna todas as urls do usuário logado' })
+    @ApiResponse({ status: 200, description: 'Urls retornadas com sucesso' })
     @UseGuards(AuthGuard)
     async getMyUrls(@CurrentUser() user: ICurrentUser) {
         return this.shortenerService.myUrls(user);
     }
 
     @Get(':shortCode')
+    @ApiOperation({ summary: 'Redireciona para a url original' })
+    @ApiParam({ name: 'shortCode', description: 'Código encurtado da URL' })
+    @ApiResponse({ status: 302, description: 'Redirecionamento para a URL original' })
     async redirect(@Param('shortCode') shortCode: string, @Res() res) {
         const original = await this.shortenerService.getOriginalUrl(shortCode);
         const tempUrl = temporaryUrlMap.get(shortCode);
@@ -26,6 +34,11 @@ export class ShortenerController {
     }
 
     @Put('/my-urls/:id')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Atualiza a url do usuário logado' })
+    @ApiParam({ name: 'id', description: 'ID da URL a ser atualizada' })
+    @ApiBody({ type: UpdateShortenerDto })
+    @ApiResponse({ status: 200, description: 'Url atualizada com sucesso' })
     @UseGuards(AuthGuard)
     async updateMyUrl(
         @Param('id') id: number,
@@ -36,6 +49,10 @@ export class ShortenerController {
     }
 
     @Delete('/my-urls/:id')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Deleta a url do usuário logado' })
+    @ApiParam({ name: 'id', description: 'ID da URL a ser deletada' })
+    @ApiResponse({ status: 200, description: 'Url deletada com sucesso' })
     @UseGuards(AuthGuard)
     async deleteMyUrl(
         @Param('id') id: number,
@@ -45,6 +62,9 @@ export class ShortenerController {
     }
 
     @Post('/shorten')
+    @ApiOperation({ summary: 'Encurta a url e retorna a url encurtada. Caso o usuário esteja logado, grava ela.' })
+    @ApiBody({ type: CreateShortenerDto })
+    @ApiResponse({ status: 200, description: 'Retorna o link da url clicável' })
     async shorten(
         @Body() urlOriginal: CreateShortenerDto,
         @CurrentUser() user: ICurrentUser,
@@ -52,5 +72,4 @@ export class ShortenerController {
         const shortUrl = await this.shortenerService.shortenUrl(urlOriginal, user);
         return shortUrl;
     }
-
 }
