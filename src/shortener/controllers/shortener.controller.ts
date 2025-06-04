@@ -7,51 +7,50 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller()
 export class ShortenerController {
-  constructor(private readonly shortenerService: ShortenerService) {}
+    constructor(private readonly shortenerService: ShortenerService) { }
 
-
-  @Get('/my-urls')
-  @UseGuards(AuthGuard)
-  async getMyUrls(@CurrentUser() user: ICurrentUser) {
-    return this.shortenerService.myUrls(user);
-}
-
-  @Get(':shortCode')
-  async redirect(@Param('shortCode') shortCode: string, @Res() res) {
-    const original = await this.shortenerService.getOriginalUrl(shortCode);
-    const tempUrl = temporaryUrlMap.get(shortCode);
-    if (tempUrl) {
-      return res.redirect(tempUrl);
+    @Get('/my-urls')
+    @UseGuards(AuthGuard)
+    async getMyUrls(@CurrentUser() user: ICurrentUser) {
+        return this.shortenerService.myUrls(user);
     }
-    return res.redirect(original);
-  }
 
-  @Put('/my-urls/:id')
-  @UseGuards(AuthGuard)
-  async updateMyUrl(
-    @Param('id') id: number,
-    @CurrentUser() user: ICurrentUser,
-    @Body() data:UpdateShortenerDto
-  ){
-    await this.shortenerService.updateMyUrl(id, user, data);
-  }
+    @Get(':shortCode')
+    async redirect(@Param('shortCode') shortCode: string, @Res() res) {
+        const original = await this.shortenerService.getOriginalUrl(shortCode);
+        const tempUrl = temporaryUrlMap.get(shortCode);
+        if (tempUrl) {
+            return res.redirect(tempUrl);
+        }
+        return res.redirect(original);
+    }
 
-  @Delete('/my-urls/:id')
-  @UseGuards(AuthGuard)
-  async deleteMyUrl(
-    @Param('id') id: number,
-    @CurrentUser() user: ICurrentUser,
-  ){
-    await this.shortenerService.deleteMyUrl(id, user);
-  }
+    @Put('/my-urls/:id')
+    @UseGuards(AuthGuard)
+    async updateMyUrl(
+        @Param('id') id: number,
+        @CurrentUser() user: ICurrentUser,
+        @Body() data: UpdateShortenerDto
+    ) {
+        await this.shortenerService.updateMyUrl(id, user, data);
+    }
 
-  @Post('/shorten')
-  async shorten(
-    @Body() urlOriginal: CreateShortenerDto,
-    @CurrentUser() user: ICurrentUser,
-  ) {
-    const shortUrl = await this.shortenerService.shortenUrl(urlOriginal, user);
-    return shortUrl;
-  }
+    @Delete('/my-urls/:id')
+    @UseGuards(AuthGuard)
+    async deleteMyUrl(
+        @Param('id') id: number,
+        @CurrentUser() user: ICurrentUser,
+    ) {
+        await this.shortenerService.deleteMyUrl(id, user);
+    }
+
+    @Post('/shorten')
+    async shorten(
+        @Body() urlOriginal: CreateShortenerDto,
+        @CurrentUser() user: ICurrentUser,
+    ) {
+        const shortUrl = await this.shortenerService.shortenUrl(urlOriginal, user);
+        return shortUrl;
+    }
 
 }
