@@ -60,7 +60,11 @@ export class ShortenerService {
         },
       },
     });
-    return shortener;
+    return shortener.map((item)=> ({
+      ...item,
+      shortUrl: `http://localhost:3001/${item.shortCode}`,
+
+    }));
   }
 
   async updateMyUrl(id: number, user: ICurrentUser, data:UpdateShortenerDto):Promise<void> {
