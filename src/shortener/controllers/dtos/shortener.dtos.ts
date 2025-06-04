@@ -5,3 +5,11 @@ export class CreateShortenerDto {
   @IsUrl()
   originalUrl: string;
 }
+
+export class UpdateShortenerDto {
+  @IsNotEmpty()
+  @IsUrl()
+  originalUrl: string;
+}
+
+

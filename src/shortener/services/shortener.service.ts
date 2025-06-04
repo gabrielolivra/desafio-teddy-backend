@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Shortener } from '../entity/shortener.entity';
 import { ICurrentUser } from 'src/shared/decorators/current-user';
 import { temporaryUrlMap } from 'src/shared/cache/url-cache';
-import { CreateShortenerDto } from '../controllers/dtos/shortener.dtos';
+import { CreateShortenerDto, UpdateShortenerDto } from '../controllers/dtos/shortener.dtos';
 
 @Injectable()
 export class ShortenerService {
@@ -19,7 +19,7 @@ export class ShortenerService {
 
     if (!user) {
       temporaryUrlMap.set(shortCode, urlOriginal.originalUrl);
-      return { shortUrl: `http://localhost:3001/api/${shortCode}` };
+      return { shortUrl: `http://localhost:3001/${shortCode}` };
     }
 
     const shortener = this.shortenerRepository.create({
@@ -32,7 +32,7 @@ export class ShortenerService {
 
     await this.shortenerRepository.save(shortener);
 
-    return { shortUrl: `http://localhost:3001/api/${shortCode}` };
+    return { shortUrl: `http://localhost:3001/${shortCode}` };
   }
 
   async getOriginalUrl(shortCode: string) {
@@ -47,5 +47,53 @@ export class ShortenerService {
     short.clicks++;
     await this.shortenerRepository.save(short);
     return short.original;
+  }
+
+  async myUrls(user: ICurrentUser) {
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    const shortener = await this.shortenerRepository.find({
+      where: {
+        user: {
+          id: user.sub,
+        },
+      },
+    });
+    return shortener;
+  }
+
+  async updateMyUrl(id: number, user: ICurrentUser, data:UpdateShortenerDto):Promise<void> {
+    const shortener = await this.shortenerRepository.findOne({
+      where: {
+        id: id,
+        user: {
+          id: user.sub,
+        },
+      },
+    });
+    if (!shortener) {
+      throw new BadRequestException('Shortener not found');
+    }
+    await this.shortenerRepository.update(id, {
+      original: data.originalUrl,
+    });
+    
+  }
+
+  async deleteMyUrl(id: number, user: ICurrentUser): Promise<void> {
+     const shortener = await this.shortenerRepository.findOne({
+      where: {
+        id: id,
+        user: {
+          id: user.sub,
+        },
+      },
+    });
+
+    if(!shortener){
+      throw new BadRequestException('Shortener not found');
+    }
+    await this.shortenerRepository.softDelete(id);
   }
 }
