@@ -5,14 +5,17 @@ import { Repository } from 'typeorm';
 import { Shortener } from '../entity/shortener.entity';
 import { ICurrentUser } from 'src/shared/decorators/current-user';
 import { temporaryUrlMap } from 'src/shared/cache/url-cache';
-import { CreateShortenerDto, UpdateShortenerDto } from '../controllers/dtos/shortener.dtos';
+import {
+  CreateShortenerDto,
+  UpdateShortenerDto,
+} from '../controllers/dtos/shortener.dtos';
 
 @Injectable()
 export class ShortenerService {
   constructor(
     @InjectRepository(Shortener)
     private readonly shortenerRepository: Repository<Shortener>,
-  ) { }
+  ) {}
 
   async shortenUrl(urlOriginal: CreateShortenerDto, user: ICurrentUser) {
     const shortCode = nanoid(6);
@@ -60,10 +63,17 @@ export class ShortenerService {
         },
       },
     });
-    return shortener;
+    return shortener.map((item) => ({
+      ...item,
+      shortUrl: `http://localhost:3001/${item.shortCode}`,
+    }));
   }
 
-  async updateMyUrl(id: number, user: ICurrentUser, data:UpdateShortenerDto):Promise<void> {
+  async updateMyUrl(
+    id: number,
+    user: ICurrentUser,
+    data: UpdateShortenerDto,
+  ): Promise<void> {
     const shortener = await this.shortenerRepository.findOne({
       where: {
         id: id,
@@ -78,11 +88,10 @@ export class ShortenerService {
     await this.shortenerRepository.update(id, {
       original: data.originalUrl,
     });
-    
   }
 
   async deleteMyUrl(id: number, user: ICurrentUser): Promise<void> {
-     const shortener = await this.shortenerRepository.findOne({
+    const shortener = await this.shortenerRepository.findOne({
       where: {
         id: id,
         user: {
@@ -91,7 +100,7 @@ export class ShortenerService {
       },
     });
 
-    if(!shortener){
+    if (!shortener) {
       throw new BadRequestException('Shortener not found');
     }
     await this.shortenerRepository.softDelete(id);
