@@ -14,16 +14,16 @@ export class Shortener {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column({ name:'short_code', unique: true, nullable:true })
+  @Column({ name: 'short_code', unique: true, nullable: true })
   shortCode: string;
 
-  @Column({name:'original', nullable:true})
+  @Column({ name: 'original', nullable: true })
   original: string;
 
-  @Column({name:'clicks', default: 0 })
+  @Column({ name: 'clicks', default: 0 })
   clicks: number;
 
-  @CreateDateColumn({name:'created_at'})
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })

@@ -1,4 +1,9 @@
 {
+  "engines": {
+    "node": ">=20.19.2",
+    "npm": ">=10.8.2",
+    "pnpm": ">=10.11.0"
+  },
   "name": "desafio-teddy-backend",
   "version": "0.0.1",
   "description": "",
