@@ -12,7 +12,8 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ShortenerModule } from './shortener/shortener.module';
-
+import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
+import { APP_FILTER } from '@nestjs/core';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -38,9 +39,16 @@ import { ShortenerModule } from './shortener/shortener.module';
     AuthModule,
     UsersModule,
     ShortenerModule,
+    SentryModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: SentryGlobalFilter,
+    },
+    AppService,
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

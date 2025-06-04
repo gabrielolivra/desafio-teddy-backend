@@ -11,9 +11,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(data:LoginDto): Promise<{ access_token: string }> {
-    const {email, password} = data;
- 
+  async signIn(data: LoginDto): Promise<{ access_token: string }> {
+    const { email, password } = data;
+
     const userArray = await this.usersService.findOne(email);
     if (!userArray || userArray.length === 0) {
       throw new UnauthorizedException();

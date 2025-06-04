@@ -27,6 +27,7 @@ export const CurrentUser = createParamDecorator(
         const decoded = jwt.verify(token, secret) as unknown as ICurrentUser;
         return decoded;
       } catch (e) {
+        console.log(e);
         return null;
       }
     }

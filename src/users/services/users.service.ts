@@ -25,13 +25,7 @@ export class UsersService {
       ...createUserDto,
       password: hashedPassword,
     });
-    this.usersRepository.save(user);
-
-    return {
-      ...user,
-      id: user.id,
-      email: user.email,
-    };
+    return this.usersRepository.save(user);
   }
 
   async findOne(email: string) {
