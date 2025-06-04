@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "build": "nest build && pnpm sentry:sourcemaps",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -21,7 +21,8 @@
     "migration:generate": "npx typeorm migration:generate src/shared/migrations/$npm_config_name -d src/data-source.ts",
     "migration:run": "npx typeorm migration:run -d src/data-source.ts",
     "migration:show": "npx typeorm migration:show -d src/data-source.ts",
-    "migration:revert": "npx typeorm migration:revert -d src/data-source.ts"
+    "migration:revert": "npx typeorm migration:revert -d src/data-source.ts",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org desafio --project node-nestjs ./out && sentry-cli sourcemaps upload --org desafio --project node-nestjs ./out"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -31,6 +32,8 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.0",
     "@nestjs/typeorm": "^11.0.0",
+    "@sentry/cli": "^2.46.0",
+    "@sentry/nestjs": "^9.26.0",
     "bcryptjs": "^3.0.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
