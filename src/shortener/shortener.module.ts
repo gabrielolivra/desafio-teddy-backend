@@ -7,6 +7,6 @@ import { Shortener } from './entity/shortener.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Shortener])],
   providers: [ShortenerService],
-  controllers: [ShortenerController]
+  controllers: [ShortenerController],
 })
 export class ShortenerModule {}

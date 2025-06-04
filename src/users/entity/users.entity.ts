@@ -1,5 +1,5 @@
 import { Shortener } from 'src/shortener/entity/shortener.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class Users {
@@ -19,7 +19,16 @@ export class Users {
   @Column({ name: 'password', nullable: false })
   password: string;
 
-  @OneToMany(() => Shortener, shortener => shortener.user)
- shorteners: Shortener[];
-}
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
+  @CreateDateColumn({ name: 'updated_at', nullable: true })
+  updatedAt: Date;
+
+  @CreateDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt: Date;
+
+
+  @OneToMany(() => Shortener, (shortener) => shortener.user)
+  shorteners: Shortener[];
+}
