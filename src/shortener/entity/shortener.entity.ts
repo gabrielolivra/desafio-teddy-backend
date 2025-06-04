@@ -1,23 +1,37 @@
 import { Users } from 'src/users/entity/users.entity';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+  DeleteDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Shortener {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn({ name: 'id' })
+  id: number;
 
-    @Column({ unique: true })
-    shortCode: string;
+  @Column({ name:'short_code', unique: true })
+  shortCode: string;
 
-    @Column()
-    original: string;
+  @Column({name:'original'})
+  original: string;
 
-    @Column({ default: 0 }) 
-    clicks: number;
+  @Column({name:'clicks', default: 0 })
+  clicks: number;
 
-    @CreateDateColumn()
-    createdAt:Date
+  @CreateDateColumn({name:'created_at'})
+  createdAt: Date;
 
-    @ManyToOne(() => Users, user => user.shorteners)
-    user: Users;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt: Date;
+
+  @ManyToOne(() => Users, (user) => user.shorteners)
+  user: Users;
 }

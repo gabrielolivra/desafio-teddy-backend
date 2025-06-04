@@ -11,7 +11,7 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('');
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors();
   await app.listen(process.env.PORT ?? 3001);
