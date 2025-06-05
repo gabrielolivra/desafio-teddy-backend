@@ -4,8 +4,6 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { LoggerMiddleware } from './shared/logger.midleware';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
@@ -28,13 +26,12 @@ import { AppDataSource } from './data-source';
     ShortenerModule,
     SentryModule.forRoot(),
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
     {
       provide: APP_FILTER,
       useClass: SentryGlobalFilter,
     },
-    AppService,
   ],
 })
 export class AppModule implements NestModule {
