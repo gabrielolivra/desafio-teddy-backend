@@ -82,6 +82,7 @@ export class ShortenerController {
   }
 
   @Post('/shorten')
+   @ApiBearerAuth()
   @ApiOperation({
     summary:
       'Encurta a url e retorna a url encurtada. Caso o usuário esteja logado, grava ela.',
