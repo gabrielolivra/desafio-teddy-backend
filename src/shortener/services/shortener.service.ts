@@ -24,7 +24,7 @@ export class ShortenerService {
       temporaryUrlMap.set(shortCode, urlOriginal.originalUrl);
 
       return {
-        shortUrl: `${process.env.URL_BASE || 'http://localhost:3001'}/${shortCode}`,
+        shortUrl: `${process.env.URL_BASE || 'http://localhost:3000'}/${shortCode}`,
       };
     }
 
@@ -39,7 +39,7 @@ export class ShortenerService {
     await this.shortenerRepository.save(shortener);
 
     return {
-      shortUrl: `${process.env.URL_BASE || 'http://localhost:3001'}/${shortCode}`,
+      shortUrl: `${process.env.URL_BASE || 'http://localhost:3000'}/${shortCode}`,
     };
   }
 
@@ -70,7 +70,7 @@ export class ShortenerService {
     });
     return shortener.map((item) => ({
       ...item,
-      shortUrl: `${process.env.URL_BASE || 'http://localhost:3001'}/${item.shortCode}`,
+      shortUrl: `${process.env.URL_BASE || 'http://localhost:3000'}/${item.shortCode}`,
     }));
   }
 
