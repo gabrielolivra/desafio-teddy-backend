@@ -60,7 +60,11 @@ describe('ShortenerController', () => {
       mockShortenerService.updateMyUrl.mockResolvedValue(undefined);
 
       await controller.updateMyUrl(id, user, data);
-      expect(mockShortenerService.updateMyUrl).toHaveBeenCalledWith(id, user, data);
+      expect(mockShortenerService.updateMyUrl).toHaveBeenCalledWith(
+        id,
+        user,
+        data,
+      );
     });
   });
 
