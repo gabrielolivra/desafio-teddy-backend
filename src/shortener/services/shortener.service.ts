@@ -19,10 +19,10 @@ export class ShortenerService {
 
   async shortenUrl(urlOriginal: CreateShortenerDto, user: ICurrentUser) {
     const shortCode = nanoid(6);
-
     if (!user) {
       temporaryUrlMap.set(shortCode, urlOriginal.originalUrl);
-      return { shortUrl: `${process.env.BASE_URL || 'http://localhost:3001'}/${shortCode}` };
+
+      return { shortUrl: `${process.env.URL_BASE || 'http://localhost:3001'}/${shortCode}` };
     }
 
     const shortener = this.shortenerRepository.create({
@@ -35,7 +35,7 @@ export class ShortenerService {
 
     await this.shortenerRepository.save(shortener);
 
-    return { shortUrl: `${process.env.BASE_URL || 'http://localhost:3001'}/${shortCode}` };
+    return { shortUrl: `${process.env.URL_BASE || 'http://localhost:3001'}/${shortCode}` };
   }
 
   async getOriginalUrl(shortCode: string) {
@@ -65,7 +65,7 @@ export class ShortenerService {
     });
     return shortener.map((item) => ({
       ...item,
-      shortUrl: `${process.env.BASE_URL || 'http://localhost:3001'}/${item.shortCode}`,
+      shortUrl: `${process.env.URL_BASE || 'http://localhost:3001'}/${item.shortCode}`,
     }));
   }
 
