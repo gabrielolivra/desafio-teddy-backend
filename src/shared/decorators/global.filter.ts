@@ -6,5 +6,7 @@ export class YourCatchAllExceptionFilter implements ExceptionFilter {
   @SentryExceptionCaptured()
   catch(exception, host): void {
     // your implementation here
+    console.log(exception);
+    console.log(host);
   }
 }

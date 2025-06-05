@@ -10,7 +10,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ShortenerService } from '../services/shortener.service';
-import { CurrentUser, ICurrentUser } from '../../shared/decorators/current-user';
+import {
+  CurrentUser,
+  ICurrentUser,
+} from '../../shared/decorators/current-user';
 import { temporaryUrlMap } from '../../shared/cache/url-cache';
 import { CreateShortenerDto, UpdateShortenerDto } from './dtos/shortener.dtos';
 import { AuthGuard } from '../../auth/guards/auth.guard';
@@ -82,7 +85,7 @@ export class ShortenerController {
   }
 
   @Post('/shorten')
-   @ApiBearerAuth()
+  @ApiBearerAuth()
   @ApiOperation({
     summary:
       'Encurta a url e retorna a url encurtada. Caso o usuário esteja logado, grava ela.',

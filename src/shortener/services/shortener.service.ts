@@ -11,20 +11,21 @@ import {
 } from '../controllers/dtos/shortener.dtos';
 import { nanoid } from 'nanoid';
 
-
 @Injectable()
 export class ShortenerService {
   constructor(
     @InjectRepository(Shortener)
     private readonly shortenerRepository: Repository<Shortener>,
-  ) { }
+  ) {}
 
   async shortenUrl(urlOriginal: CreateShortenerDto, user: ICurrentUser) {
     const shortCode = nanoid(6);
     if (!user) {
       temporaryUrlMap.set(shortCode, urlOriginal.originalUrl);
 
-      return { shortUrl: `${process.env.URL_BASE || 'http://localhost:3001'}/${shortCode}` };
+      return {
+        shortUrl: `${process.env.URL_BASE || 'http://localhost:3001'}/${shortCode}`,
+      };
     }
 
     const shortener = this.shortenerRepository.create({
@@ -37,7 +38,9 @@ export class ShortenerService {
 
     await this.shortenerRepository.save(shortener);
 
-    return { shortUrl: `${process.env.URL_BASE || 'http://localhost:3001'}/${shortCode}` };
+    return {
+      shortUrl: `${process.env.URL_BASE || 'http://localhost:3001'}/${shortCode}`,
+    };
   }
 
   async getOriginalUrl(shortCode: string) {

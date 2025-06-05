@@ -20,7 +20,7 @@ import { AppDataSource } from './data-source';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-   TypeOrmModule.forRoot({
+    TypeOrmModule.forRoot({
       ...AppDataSource.options,
     }),
     AuthModule,
