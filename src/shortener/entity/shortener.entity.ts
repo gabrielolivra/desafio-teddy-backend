@@ -12,7 +12,7 @@ import {
 @Entity()
 export class Shortener {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({ name: 'short_code', unique: true, nullable: true })
   shortCode: string;

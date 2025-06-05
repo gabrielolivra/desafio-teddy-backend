@@ -70,7 +70,7 @@ export class ShortenerService {
   }
 
   async updateMyUrl(
-    id: number,
+    id: string,
     user: ICurrentUser,
     data: UpdateShortenerDto,
   ): Promise<void> {
@@ -90,7 +90,7 @@ export class ShortenerService {
     });
   }
 
-  async deleteMyUrl(id: number, user: ICurrentUser): Promise<void> {
+  async deleteMyUrl(id: string, user: ICurrentUser): Promise<void> {
     const shortener = await this.shortenerRepository.findOne({
       where: {
         id: id,
