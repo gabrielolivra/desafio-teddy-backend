@@ -27,7 +27,7 @@ async function bootstrap() {
   app.setGlobalPrefix('');
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors();
-  await app.listen(process.env.PORT ?? 3001);
+  await app.listen(process.env.PORT ?? 3000);
   await AppDataSource.initialize();
   await AppDataSource.runMigrations();
 }

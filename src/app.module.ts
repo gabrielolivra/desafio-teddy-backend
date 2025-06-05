@@ -14,27 +14,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ShortenerModule } from './shortener/shortener.module';
 import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
 import { APP_FILTER } from '@nestjs/core';
+import { AppDataSource } from './data-source';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      database: process.env.DB_NAME,
-      migrations: ['dist/auth/migrations/*.js'],
-      entities: ['dist/**/*.entity{.ts,.js}'],
-      migrationsTableName: 'migrations',
-      synchronize: false,
-      ssl:
-        process.env.NODE_ENV === 'production'
-          ? { rejectUnauthorized: false }
-          : false,
-      migrationsRun: true,
+   TypeOrmModule.forRoot({
+      ...AppDataSource.options,
     }),
     AuthModule,
     UsersModule,
@@ -54,6 +41,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes({ path: '/', method: RequestMethod.ALL });
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
