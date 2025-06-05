@@ -61,7 +61,7 @@ export class ShortenerController {
   @ApiResponse({ status: 200, description: 'Url atualizada com sucesso' })
   @UseGuards(AuthGuard)
   async updateMyUrl(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @CurrentUser() user: ICurrentUser,
     @Body() data: UpdateShortenerDto,
   ) {
@@ -75,7 +75,7 @@ export class ShortenerController {
   @ApiResponse({ status: 200, description: 'Url deletada com sucesso' })
   @UseGuards(AuthGuard)
   async deleteMyUrl(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @CurrentUser() user: ICurrentUser,
   ) {
     await this.shortenerService.deleteMyUrl(id, user);
