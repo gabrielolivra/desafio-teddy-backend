@@ -14,6 +14,7 @@ async function bootstrap() {
     .setDescription('API desenvolvida para encurtar links')
     .setVersion('1.0')
     .addTag('teddy')
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
