@@ -10,10 +10,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ShortenerService } from '../services/shortener.service';
-import { CurrentUser, ICurrentUser } from 'src/shared/decorators/current-user';
-import { temporaryUrlMap } from 'src/shared/cache/url-cache';
+import { CurrentUser, ICurrentUser } from '../../shared/decorators/current-user';
+import { temporaryUrlMap } from '../../shared/cache/url-cache';
 import { CreateShortenerDto, UpdateShortenerDto } from './dtos/shortener.dtos';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { AuthGuard } from '../../auth/guards/auth.guard';
 import {
   ApiOperation,
   ApiResponse,

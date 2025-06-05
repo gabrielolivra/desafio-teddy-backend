@@ -1,4 +1,5 @@
-import { Shortener } from 'src/shortener/entity/shortener.entity';
+
+import { Shortener } from '../../shortener/entity/shortener.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
